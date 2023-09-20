@@ -1,34 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-4">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vue 3 Experiment</title>
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.29/dist/vue.global.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vue 3 Todo App</title>
 </head>
 <body>
-    <div id="app">
-        <h1>Conditional Rendering</h1>
+<div id="app">
+<h1>Todo App</h1>
+<input v-model="newTask" @keyup.enter="addTask" placeholder="Add a new task">
+<ul>
+<li v-for="(task, index) in tasks" :key="index">
+<input type="checkbox" v-model="task.completed">
+<span :class="{ completed: task.completed }">{{ task.text }}</span>
+<button @click="deleteTask(index)">Delete</button>
+</li>
+</ul>
+</div>
 
-        <p v-if="showElement">This element is SHOWN using v-if</p>
+ 
 
-        <p v-else>This element is SHOWN using v-else</p>
-        <h1>FORM INPUT HANDLING</h1>
-        <input type="text" v-model="inputText">
-        <p>YOUR ENTRY: {{ inputText }}</p>
-    </div>
-
-    <script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.20/dist/vue.global.prod.js"></script>
+<script>
         const app = Vue.createApp({
             data() {
                 return {
-                    showElement: true,
-                    inputText: ''
+                    newTask: "",
+                    tasks: []
                 };
+            },
+            methods: {
+                addTask() {
+                    if (this.newTask.trim() === "") return;
+                    this.tasks.push({ text: this.newTask, completed: false });
+                    this.newTask = "";
+                },
+                deleteTask(index) {
+                    this.tasks.splice(index, 1);
+                }
             }
         });
 
-        app.mount('#app');
-    </script>
+ 
+
+        app.mount("#app");
+</script>
+
+ 
+
+    <style>
+        .completed {
+            text-decoration: line-through;
+        }
+</style>
 </body>
 </html>
